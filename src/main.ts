@@ -29,9 +29,9 @@ async function bootstrap() {
 
   // Swagger setup
   const config = new DocumentBuilder()
-    .setTitle('Clenja API')
+    .setTitle('SpewPay API')
     .setDescription(
-      `API documentation for Clenja fintech app.
+      `API documentation for SpewPay fintech app.
       
 ## Features
 - **Wallets**: User wallet management with balance tracking
@@ -62,7 +62,7 @@ All amounts are in Nigerian Naira (NGN). Internally stored in Kobo (smallest uni
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
 
-  console.log(`🚀 Clenja API running on http://localhost:${port}`);
+  console.log(`🚀 SpewPay API running on http://localhost:${port}`);
   console.log(`📚 Swagger docs at http://localhost:${port}/api`);
 }
 
