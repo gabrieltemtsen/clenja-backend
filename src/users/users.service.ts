@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from 'src/entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -23,6 +23,7 @@ export class UsersService {
 
     return this.usersRepo.save(user);
   }
+
   findAll() {
     return this.usersRepo.find({
       select: ['id', 'email', 'displayName', 'status', 'kycLevel'],
@@ -31,5 +32,12 @@ export class UsersService {
 
   findOne(id: string) {
     return this.usersRepo.findOneBy({ id });
+  }
+
+  findByEmailWithPassword(email: string) {
+    return this.usersRepo.findOne({
+      where: { email },
+      select: ['id', 'email', 'displayName', 'passwordHash'],
+    });
   }
 }
