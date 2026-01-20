@@ -29,7 +29,7 @@
 ### API Base URL
 ```
 Development: http://localhost:3000/api/v1
-Production:  https://api.clenja.com/api/v1
+Production:  https://api.spewpay.com/api/v1
 ```
 
 ### Headers for All Requests

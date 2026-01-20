@@ -23,7 +23,7 @@
 
 ## Overview
 
-This document describes the **Paystack payment gateway integration** for Clenja. The implementation follows banking best practices:
+This document describes the **Paystack payment gateway integration** for SpewPay. The implementation follows banking best practices:
 
 | Feature | Description |
 |---------|-------------|
@@ -482,4 +482,4 @@ For questions or issues:
 
 ---
 
-*Built with ❤️ for Clenja*
+*Built with ❤️ for SpewPay*
