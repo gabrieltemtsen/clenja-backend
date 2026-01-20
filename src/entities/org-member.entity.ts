@@ -24,6 +24,6 @@ export class OrgMember extends BaseEntity {
   })
   status: OrgMemberStatus;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   parentMemberId?: string | null;
 }

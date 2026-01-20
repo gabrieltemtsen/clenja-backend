@@ -75,7 +75,7 @@ export class Transaction extends BaseEntity {
     /**
      * External provider reference (e.g., Paystack transaction reference).
      */
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', nullable: true })
     providerReference?: string | null;
 
     /**
@@ -93,12 +93,12 @@ export class Transaction extends BaseEntity {
     /**
      * Reason for failure if status is FAILED.
      */
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', nullable: true })
     failureReason?: string | null;
 
     /**
      * Description/narration for the transaction.
      */
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', nullable: true })
     description?: string | null;
 }
