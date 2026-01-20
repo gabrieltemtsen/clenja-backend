@@ -5,13 +5,13 @@ import { UserStatus } from '../common/enums';
 @Entity('users')
 export class User extends BaseEntity {
   @Index({ unique: true })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   email?: string;
 
   @Column()
   passwordHash: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   displayName?: string;
 
   @Column({

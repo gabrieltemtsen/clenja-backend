@@ -43,7 +43,7 @@ export class WebhookEvent {
     /**
      * Signature header for verification audit.
      */
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', nullable: true })
     signature?: string | null;
 
     /**
