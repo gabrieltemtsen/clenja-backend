@@ -6,12 +6,9 @@ import { User } from '../entities/user.entity';
 import { WalletsModule } from '../wallets/wallets.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    forwardRef(() => WalletsModule),
-  ],
+  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => WalletsModule)],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}
