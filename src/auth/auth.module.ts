@@ -5,11 +5,12 @@ import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import type { StringValue } from 'ms';
 
-const jwtExpiresIn: string | number =
+const jwtExpiresIn: number | StringValue =
   process.env.JWT_EXPIRES_IN && /^\d+$/.test(process.env.JWT_EXPIRES_IN)
     ? Number(process.env.JWT_EXPIRES_IN)
-    : (process.env.JWT_EXPIRES_IN ?? '15m');
+    : ((process.env.JWT_EXPIRES_IN ?? '15m') as StringValue);
 
 @Module({
   imports: [
