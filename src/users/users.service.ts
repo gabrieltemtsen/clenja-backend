@@ -1,10 +1,8 @@
 import { Injectable, Logger, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '../entities/user.entity';
 import { WalletsService } from '../wallets/wallets.service';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,42 +13,44 @@ export class UsersService {
     private readonly usersRepo: Repository<User>,
     @Inject(forwardRef(() => WalletsService))
     private readonly walletsService: WalletsService,
-  ) { }
+  ) {}
 
-  async create(dto: CreateUserDto) {
-    const passwordHash = await bcrypt.hash(dto.password, 10);
-
-    const user = this.usersRepo.create({
-      email: dto.email,
-      displayName: dto.fullName,
-      passwordHash,
-    });
-
+  async create(data: {
+    email: string;
+    displayName: string;
+    passwordHash: string;
+  }): Promise<User> {
+    const user = this.usersRepo.create(data);
     const savedUser = await this.usersRepo.save(user);
 
-    // Auto-create wallet for new user
     try {
       await this.walletsService.createUserWallet(savedUser.id);
       this.logger.log(`Wallet created for user ${savedUser.id}`);
     } catch (error) {
-      this.logger.error(`Failed to create wallet for user ${savedUser.id}: ${error.message}`);
-      // Don't fail user creation if wallet creation fails
+      if (error instanceof Error) {
+        this.logger.error(
+          `Wallet creation failed for user ${savedUser.id}: ${error.message}`,
+        );
+      }
     }
 
     return savedUser;
   }
 
-  findAll() {
+  async findAuthUserByEmail(email: string): Promise<User | null> {
+    return this.usersRepo.findOne({
+      where: { email },
+      select: ['id', 'email', 'displayName', 'passwordHash'],
+    });
+  }
+
+  findAll(): Promise<User[]> {
     return this.usersRepo.find({
       select: ['id', 'email', 'displayName', 'status', 'kycLevel'],
     });
   }
 
-  findOne(id: string) {
+  findOne(id: string): Promise<User | null> {
     return this.usersRepo.findOneBy({ id });
-  }
-
-  findByEmail(email: string) {
-    return this.usersRepo.findOneBy({ email });
   }
 }

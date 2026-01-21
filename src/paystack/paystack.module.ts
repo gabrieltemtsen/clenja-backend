@@ -4,8 +4,8 @@ import { PaystackService } from './paystack.service';
 
 @Global()
 @Module({
-    imports: [ConfigModule],
-    providers: [PaystackService],
-    exports: [PaystackService],
+  imports: [ConfigModule],
+  providers: [PaystackService],
+  exports: [PaystackService],
 })
-export class PaystackModule { }
+export class PaystackModule {}
