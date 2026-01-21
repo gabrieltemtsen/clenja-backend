@@ -61,7 +61,7 @@ All amounts are in Nigerian Naira (NGN). Internally stored in Kobo (smallest uni
 
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
       tagsSorter: (a: { name: string }, b: { name: string }) => {
         const order = [
