@@ -1,4 +1,4 @@
-# Clenja Backend (NestJS + TypeORM + Postgres/Neon) — Milestones & Schema Draft
+# SpewPay Backend (NestJS + TypeORM + Postgres/Neon) — Milestones & Schema Draft
 
 This README is a milestone checklist to take the backend from zero → production launch for:
 - Normal finance: deposit, withdrawal, transfer

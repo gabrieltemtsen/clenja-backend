@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+
+// Feature Modules
 import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { PaystackModule } from './paystack/paystack.module';
+import { WalletsModule } from './wallets/wallets.module';
+import { LedgerModule } from './ledger/ledger.module';
+import { PaymentsModule } from './payments/payments.module';
+import { TransfersModule } from './transfers/transfers.module';
 
 @Module({
   imports: [
@@ -15,12 +21,18 @@ import { AuthModule } from './auth/auth.module';
       url: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true, // DEV ONLY - disable in production!
     }),
 
-    UsersModule,
+    // Core modules
+    PaystackModule,
+    WalletsModule,
+    LedgerModule,
 
-    AuthModule,
+    // Feature modules
+    UsersModule,
+    PaymentsModule,
+    TransfersModule,
   ],
 })
 export class AppModule {}

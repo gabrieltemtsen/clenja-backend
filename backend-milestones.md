@@ -1,6 +1,6 @@
-# Clenja Backend MVP – Milestones
+# SpewPay Backend MVP – Milestones
 
-This document defines **clear, checkable milestones** for building the Clenja backend MVP using **NestJS + PostgreSQL (Docker) + TypeORM**.
+This document defines **clear, checkable milestones** for building the SpewPay backend MVP using **NestJS + PostgreSQL (Docker) + TypeORM**.
 
 The goal is to avoid over‑engineering while ensuring a solid, extensible foundation.
 
