@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-// Feature Modules
+import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaystackModule } from './paystack/paystack.module';
 import { WalletsModule } from './wallets/wallets.module';
@@ -12,25 +12,26 @@ import { TransfersModule } from './transfers/transfers.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
 
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
       autoLoadEntities: true,
-      synchronize: true, // DEV ONLY - disable in production!
+      synchronize: true, // DEV ONLY
     }),
 
+    // AUTH
+    AuthModule,
+
     // Core modules
-    PaystackModule,
+    UsersModule,
     WalletsModule,
     LedgerModule,
+    PaystackModule,
 
     // Feature modules
-    UsersModule,
     PaymentsModule,
     TransfersModule,
   ],

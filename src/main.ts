@@ -12,7 +12,7 @@ async function bootstrap() {
   // Global API prefix
   app.setGlobalPrefix('api/v1');
 
-  // Validation
+  // Global Validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -24,7 +24,7 @@ async function bootstrap() {
     }),
   );
 
-  // CORS
+  // Enable CORS
   app.enableCors();
 
   // Swagger setup
@@ -32,7 +32,7 @@ async function bootstrap() {
     .setTitle('SpewPay API')
     .setDescription(
       `API documentation for SpewPay fintech app.
-      
+
 ## Features
 - **Wallets**: User wallet management with balance tracking
 - **Payments**: Deposit funds via Paystack
@@ -40,7 +40,7 @@ async function bootstrap() {
 - **Ledger**: Double-entry accounting for all transactions
 
 ## Authentication
-Most endpoints require authentication (to be implemented).
+Most endpoints require authentication.
 
 ## Currency
 All amounts are in Nigerian Naira (NGN). Internally stored in Kobo (smallest unit).
@@ -48,19 +48,39 @@ All amounts are in Nigerian Naira (NGN). Internally stored in Kobo (smallest uni
     `,
     )
     .setVersion('1.0')
+    // Declare tags in the order you want them displayed
+    .addTag('Auth', 'Authentication & login/register')
     .addTag('Users', 'User management')
     .addTag('Wallets', 'Wallet and balance management')
     .addTag('Payments', 'Deposits via Paystack')
     .addTag('Transfers', 'Withdrawals and internal transfers')
+    .addTag('Ledger', 'Accounting ledger')
     .addTag('Webhooks', 'Payment provider webhooks')
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  SwaggerModule.setup('docs', app, document, {
+    swaggerOptions: {
+      tagsSorter: (a: { name: string }, b: { name: string }) => {
+        const order = [
+          'Auth',
+          'Users',
+          'Wallets',
+          'Payments',
+          'Transfers',
+          'Ledger',
+          'Webhooks',
+        ];
+        return order.indexOf(a.name) - order.indexOf(b.name);
+      },
+      operationsSorter: 'method',
+    },
+  });
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 
   console.log(`🚀 SpewPay API running on http://localhost:${port}`);
   console.log(`📚 Swagger docs at http://localhost:${port}/api`);
