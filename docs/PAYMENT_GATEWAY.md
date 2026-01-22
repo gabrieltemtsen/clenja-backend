@@ -161,7 +161,7 @@ Open http://localhost:3000/api in your browser for interactive API documentation
   "userId": "uuid",
   "email": "user@example.com",
   "amountInNaira": 5000,
-  "callbackUrl": "https://yourapp.com/payment/callback",
+  "callbackUrl": "https://api.spewpay.com/payment/callback",
   "idempotencyKey": "optional-client-uuid"
 }
 ```
