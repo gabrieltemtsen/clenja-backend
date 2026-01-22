@@ -4,6 +4,7 @@ import {
     Get,
     Body,
     Param,
+    Query,
     Headers,
     Req,
     HttpCode,
@@ -64,6 +65,47 @@ export class PaymentsController {
                 },
             },
         };
+    }
+
+    @Get('callback')
+    @ApiOperation({ summary: 'Handle Paystack payment callback redirect' })
+    async handleCallback(
+        @Query('reference') reference: string,
+        @Query('trxref') trxref: string,
+    ) {
+        // Use reference or trxref (Paystack sends both)
+        const ref = reference || trxref;
+
+        if (!ref) {
+            return {
+                success: false,
+                message: 'No transaction reference provided',
+            };
+        }
+
+        try {
+            const transaction = await this.paymentsService.verifyDeposit(ref);
+
+            return {
+                success: true,
+                message: 'Payment verified successfully',
+                data: {
+                    transactionId: transaction.id,
+                    reference: transaction.reference,
+                    status: transaction.status,
+                    amount: {
+                        kobo: transaction.amount,
+                        naira: koboToNaira(transaction.amount),
+                    },
+                },
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Payment verification failed',
+                reference: ref,
+            };
+        }
     }
 }
 
