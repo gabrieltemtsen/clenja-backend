@@ -25,6 +25,13 @@ export enum OrgMemberStatus {
   REMOVED = 'REMOVED',
 }
 
+export enum OrgInviteStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  EXPIRED = 'EXPIRED',
+  REVOKED = 'REVOKED',
+}
+
 // ============ Payment & Wallet Enums ============
 
 export enum TransactionType {
@@ -66,4 +73,21 @@ export enum Currency {
 
 export enum WebhookProvider {
   PAYSTACK = 'paystack',
+}
+
+// ============ Allocation Enums ============
+
+export enum AllocationStatus {
+  ACTIVE = 'ACTIVE',
+  FROZEN = 'FROZEN',
+  CLOSED = 'CLOSED',
+}
+
+export enum AllocationRuleType {
+  TXN_LIMIT = 'TXN_LIMIT',             // Max per transaction
+  DAILY_LIMIT = 'DAILY_LIMIT',         // Max per day
+  MONTHLY_LIMIT = 'MONTHLY_LIMIT',     // Max per month
+  TIME_LOCK = 'TIME_LOCK',             // Only spend within time window
+  WHITELIST_RECIPIENTS = 'WHITELIST_RECIPIENTS', // Only send to specific users
+  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL',       // Needs approval above threshold
 }

@@ -9,6 +9,8 @@ import { WalletsModule } from './wallets/wallets.module';
 import { LedgerModule } from './ledger/ledger.module';
 import { PaymentsModule } from './payments/payments.module';
 import { TransfersModule } from './transfers/transfers.module';
+import { OrgsModule } from './orgs/orgs.module';
+import { AllocationsModule } from './allocations/allocations.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { TransfersModule } from './transfers/transfers.module';
     // Feature modules
     PaymentsModule,
     TransfersModule,
+    OrgsModule,
+    AllocationsModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
