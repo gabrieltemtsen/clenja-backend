@@ -29,4 +29,10 @@ export class User extends BaseEntity {
 
   @Column({ type: 'timestamp', nullable: true })
   resetTokenExpiry?: Date;
+
+  @Column({ type: 'varchar', nullable: true })
+  emailVerificationToken?: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  emailVerifiedAt?: Date;
 }

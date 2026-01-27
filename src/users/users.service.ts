@@ -40,7 +40,7 @@ export class UsersService {
   async findAuthUserByEmail(email: string): Promise<User | null> {
     return this.usersRepo.findOne({
       where: { email },
-      select: ['id', 'email', 'displayName', 'passwordHash'],
+      select: ['id', 'email', 'displayName', 'passwordHash', 'emailVerifiedAt'],
     });
   }
 
@@ -75,5 +75,33 @@ export class UsersService {
       resetToken: undefined,
       resetTokenExpiry: undefined,
     });
+  }
+
+  async updateEmailVerificationToken(
+    id: string,
+    emailVerificationToken: string,
+  ): Promise<void> {
+    await this.usersRepo.update(id, { emailVerificationToken });
+  }
+
+  async findByEmailVerificationToken(
+    email: string,
+    token: string,
+  ): Promise<User | null> {
+    return this.usersRepo.findOne({
+      where: { email, emailVerificationToken: token },
+      select: ['id', 'email', 'emailVerificationToken', 'emailVerifiedAt'],
+    });
+  }
+
+  async verifyEmail(id: string): Promise<void> {
+    await this.usersRepo.update(id, {
+      emailVerifiedAt: new Date(),
+      emailVerificationToken: undefined,
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.usersRepo.delete(id);
   }
 }
