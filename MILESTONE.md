@@ -9,12 +9,12 @@ This README is a milestone checklist to take the backend from zero → productio
 ## 0) Foundations (Day 0–2)
 
 ### Repo & Tooling
-- [ ] NestJS project structure: `apps/api` (optional), `src/modules/*`
-- [ ] Config module (`@nestjs/config`) with env validation (zod/joi)
+- [x] NestJS project structure: `apps/api` (optional), `src/modules/*`
+- [x] Config module (`@nestjs/config`) with env validation (zod/joi)
 - [ ] Global pipes/filters/interceptors (validation, exception mapping)
-- [ ] Logging (pino/winston) + request id correlation
-- [ ] Swagger (`@nestjs/swagger`) + versioned API prefix (`/v1`)
-- [ ] Dockerfile + docker-compose for local Postgres (even if prod is Neon)
+- [x] Logging (pino/winston) + request id correlation
+- [x] Swagger (`@nestjs/swagger`) + versioned API prefix (`/v1`)
+- [x] Dockerfile + docker-compose for local Postgres (even if prod is Neon)
 - [ ] Lint/format (eslint, prettier) + husky pre-commit
 - [ ] Health checks `/health` (db ping)
 
@@ -29,13 +29,13 @@ This README is a milestone checklist to take the backend from zero → productio
 ## 1) Auth & Identity (Day 2–5)
 
 ### Auth Core
-- [ ] User registration/login (email/phone + password or OTP)
-- [ ] Password hashing (argon2/bcrypt) + password rules
-- [ ] JWT access token + refresh token (rotation)
+- [x] User registration/login (email/phone + password or OTP)
+- [x] Password hashing (argon2/bcrypt) + password rules
+- [x] JWT access token + refresh token (rotation)
 - [ ] Session table for refresh tokens (revoke, device info)
 - [ ] RBAC guard base (role/permission checks)
 - [ ] Rate limiting for auth endpoints
-- [ ] Email/phone verification (optional but recommended)
+- [x] Email/phone verification (optional but recommended)
 
 ### Security Baselines
 - [ ] Helmet, CORS, CSRF strategy (if cookies)
