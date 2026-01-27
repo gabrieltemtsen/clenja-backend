@@ -6,7 +6,10 @@ import {
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { RegisterDto } from './dto/register.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -66,5 +69,53 @@ export class AuthService {
         displayName: user.displayName,
       },
     };
+  }
+
+  /**
+   * Initiate forgot password process
+   */
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const user = await this.usersService.findAuthUserByEmail(dto.email);
+
+    if (!user) {
+      // Don't reveal if email exists
+      return { message: 'If email exists, reset instructions have been sent' };
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+
+    await this.usersService.updateResetToken(
+      user.id,
+      resetToken,
+      resetTokenExpiry,
+    );
+
+    // TODO: Send email with reset token
+    // For now, return token (remove in production)
+    return {
+      message: 'If email exists, reset instructions have been sent',
+      resetToken, // Remove this in production
+    };
+  }
+
+  /**
+   * Reset password using token
+   */
+  async resetPassword(dto: ResetPasswordDto) {
+    const user = await this.usersService.findByResetToken(dto.token);
+
+    if (!user || !user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    // Update password and clear reset token
+    await this.usersService.updatePassword(user.id, passwordHash);
+
+    return { message: 'Password reset successfully' };
   }
 }
