@@ -6,13 +6,18 @@ import {
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { RegisterDto } from './dto/register.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { EmailService } from '../common/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
   /**
@@ -66,5 +71,61 @@ export class AuthService {
         displayName: user.displayName,
       },
     };
+  }
+
+  /**
+   * Initiate forgot password process
+   */
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const user = await this.usersService.findAuthUserByEmail(dto.email);
+
+    if (!user) {
+      // Don't reveal if email exists
+      return { message: 'If email exists, reset instructions have been sent' };
+    }
+
+    // Generate reset token (6-digit code)
+    const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+
+    await this.usersService.updateResetToken(
+      user.id,
+      resetToken,
+      resetTokenExpiry,
+    );
+
+    // Send reset email
+    try {
+      await this.emailService.sendPasswordResetEmail(user.email!, resetToken);
+      console.log(`Password reset email sent to: ${user.email}`);
+    } catch (error) {
+      console.error('Failed to send reset email:', error);
+      // Log the specific error for debugging
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+    }
+
+    return { message: 'If email exists, reset instructions have been sent' };
+  }
+
+  /**
+   * Reset password using token
+   */
+  async resetPassword(dto: ResetPasswordDto) {
+    const user = await this.usersService.findByResetToken(dto.token);
+
+    if (!user || !user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    // Update password and clear reset token
+    await this.usersService.updatePassword(user.id, passwordHash);
+
+    return { message: 'Password reset successfully' };
   }
 }

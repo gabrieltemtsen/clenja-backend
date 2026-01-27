@@ -23,4 +23,10 @@ export class User extends BaseEntity {
 
   @Column({ default: 0 })
   kycLevel: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  resetToken?: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpiry?: Date;
 }
