@@ -10,12 +10,14 @@ import * as crypto from 'crypto';
 import { RegisterDto } from './dto/register.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { EmailService } from '../common/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
   /**
@@ -92,12 +94,20 @@ export class AuthService {
       resetTokenExpiry,
     );
 
-    // TODO: Send email with reset token
-    // For now, return token (remove in production)
-    return {
-      message: 'If email exists, reset instructions have been sent',
-      resetToken, // Remove this in production
-    };
+    // Send reset email
+    try {
+      await this.emailService.sendPasswordResetEmail(user.email!, resetToken);
+      console.log(`Password reset email sent to: ${user.email}`);
+    } catch (error) {
+      console.error('Failed to send reset email:', error);
+      // Log the specific error for debugging
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+    }
+
+    return { message: 'If email exists, reset instructions have been sent' };
   }
 
   /**
