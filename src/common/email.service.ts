@@ -34,4 +34,27 @@ export class EmailService {
       throw error;
     }
   }
+
+  async sendEmailVerification(email: string, verificationToken: string) {
+    try {
+      const result = await this.resend.emails.send({
+        from: process.env.FROM_EMAIL || 'noreply@gideon-buba.me',
+        to: email,
+        subject: 'Verify Your Email Address',
+        html: `
+          <h2>Welcome! Please verify your email</h2>
+          <p>Thank you for signing up. Please use the code below to verify your email address:</p>
+          <div style="background: #f8f9fa; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+            <h3 style="margin: 0; font-size: 24px; letter-spacing: 3px;">${verificationToken}</h3>
+          </div>
+          <p>This code will expire in 24 hours.</p>
+        `,
+      });
+      console.log('Verification email sent successfully:', result);
+      return result;
+    } catch (error) {
+      console.error('Resend verification email error:', error);
+      throw error;
+    }
+  }
 }
