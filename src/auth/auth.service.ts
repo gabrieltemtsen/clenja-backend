@@ -84,8 +84,8 @@ export class AuthService {
       return { message: 'If email exists, reset instructions have been sent' };
     }
 
-    // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
+    // Generate reset token (6-digit code)
+    const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
     await this.usersService.updateResetToken(

@@ -19,9 +19,11 @@ export class EmailService {
         subject: 'Reset Your Password',
         html: `
           <h2>Password Reset Request</h2>
-          <p>You requested a password reset. Click the link below to reset your password:</p>
-          <a href="${resetUrl}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
-          <p>This link will expire in 1 hour.</p>
+          <p>You requested a password reset. Use the code below:</p>
+          <div style="background: #f8f9fa; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+            <h3 style="margin: 0; font-size: 24px; letter-spacing: 3px;">${resetToken}</h3>
+          </div>
+          <p>This code will expire in 1 hour.</p>
           <p>If you didn't request this, please ignore this email.</p>
         `,
       });
