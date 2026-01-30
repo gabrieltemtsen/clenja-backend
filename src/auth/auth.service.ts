@@ -11,6 +11,7 @@ import { RegisterDto } from './dto/register.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { ResendVerificationEmailDto } from './dto/resend-verification-email.dto';
 import { EmailService } from '../common/email.service';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
-  ) {}
+  ) { }
 
   /**
    * Register a new user
@@ -156,7 +157,7 @@ export class AuthService {
    */
   async verifyEmail(dto: VerifyEmailDto) {
     const user = await this.usersService.findByEmailVerificationToken(dto.email, dto.token);
-    
+
     if (!user) {
       throw new BadRequestException('Invalid email or verification token');
     }
@@ -169,5 +170,42 @@ export class AuthService {
     await this.usersService.verifyEmail(user.id);
 
     return { message: 'Email verified successfully' };
+  }
+
+  /**
+   * Resend verification email for existing users
+   */
+  async resendVerificationEmail(dto: ResendVerificationEmailDto) {
+    const user = await this.usersService.findAuthUserByEmail(dto.email);
+
+    // Don't reveal if email exists for security
+    if (!user) {
+      return { message: 'If email exists, verification instructions have been sent' };
+    }
+
+    // Check if already verified
+    if (user.emailVerifiedAt) {
+      return { message: 'Email is already verified. You can login now.' };
+    }
+
+    // Generate new verification token (6-digit code)
+    const emailVerificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Update verification token
+    await this.usersService.updateEmailVerificationToken(user.id, emailVerificationToken);
+
+    // Send verification email
+    try {
+      await this.emailService.sendEmailVerification(dto.email, emailVerificationToken);
+      console.log(`Verification email resent to: ${dto.email}`);
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+    }
+
+    return { message: 'If email exists, verification instructions have been sent' };
   }
 }
