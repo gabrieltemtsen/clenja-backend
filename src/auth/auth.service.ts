@@ -20,7 +20,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
-  ) { }
+  ) {}
 
   /**
    * Register a new user
@@ -36,7 +36,9 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     // Generate email verification token
-    const emailVerificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const emailVerificationToken = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
 
     // Create the new user
     const user = await this.usersService.create({
@@ -46,18 +48,25 @@ export class AuthService {
     });
 
     // Set verification token
-    await this.usersService.updateEmailVerificationToken(user.id, emailVerificationToken);
+    await this.usersService.updateEmailVerificationToken(
+      user.id,
+      emailVerificationToken,
+    );
 
     // Send verification email
     try {
-      await this.emailService.sendEmailVerification(dto.email, emailVerificationToken);
+      await this.emailService.sendEmailVerification(
+        dto.email,
+        emailVerificationToken,
+      );
       console.log(`Verification email sent to: ${dto.email}`);
     } catch (error) {
       console.error('Failed to send verification email:', error);
     }
 
     return {
-      message: 'Registration successful. Please check your email to verify your account.',
+      message:
+        'Registration successful. Please check your email to verify your account.',
       userId: user.id,
     };
   }
@@ -74,7 +83,9 @@ export class AuthService {
 
     // Check if email is verified
     if (!user.emailVerifiedAt) {
-      throw new UnauthorizedException('Please verify your email before logging in');
+      throw new UnauthorizedException(
+        'Please verify your email before logging in',
+      );
     }
 
     // Verify password
@@ -156,7 +167,10 @@ export class AuthService {
    * Verify email with token
    */
   async verifyEmail(dto: VerifyEmailDto) {
-    const user = await this.usersService.findByEmailVerificationToken(dto.email, dto.token);
+    const user = await this.usersService.findByEmailVerificationToken(
+      dto.email,
+      dto.token,
+    );
 
     if (!user) {
       throw new BadRequestException('Invalid email or verification token');
@@ -180,7 +194,9 @@ export class AuthService {
 
     // Don't reveal if email exists for security
     if (!user) {
-      return { message: 'If email exists, verification instructions have been sent' };
+      return {
+        message: 'If email exists, verification instructions have been sent',
+      };
     }
 
     // Check if already verified
@@ -189,14 +205,22 @@ export class AuthService {
     }
 
     // Generate new verification token (6-digit code)
-    const emailVerificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const emailVerificationToken = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
 
     // Update verification token
-    await this.usersService.updateEmailVerificationToken(user.id, emailVerificationToken);
+    await this.usersService.updateEmailVerificationToken(
+      user.id,
+      emailVerificationToken,
+    );
 
     // Send verification email
     try {
-      await this.emailService.sendEmailVerification(dto.email, emailVerificationToken);
+      await this.emailService.sendEmailVerification(
+        dto.email,
+        emailVerificationToken,
+      );
       console.log(`Verification email resent to: ${dto.email}`);
     } catch (error) {
       console.error('Failed to send verification email:', error);
@@ -206,6 +230,8 @@ export class AuthService {
       }
     }
 
-    return { message: 'If email exists, verification instructions have been sent' };
+    return {
+      message: 'If email exists, verification instructions have been sent',
+    };
   }
 }

@@ -8,13 +8,13 @@ import { WalletsModule } from '../wallets/wallets.module';
 import { LedgerModule } from '../ledger/ledger.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([TransferRecipient, Transaction]),
-        WalletsModule,
-        LedgerModule,
-    ],
-    providers: [TransfersService],
-    controllers: [TransfersController],
-    exports: [TransfersService],
+  imports: [
+    TypeOrmModule.forFeature([TransferRecipient, Transaction]),
+    WalletsModule,
+    LedgerModule,
+  ],
+  providers: [TransfersService],
+  controllers: [TransfersController],
+  exports: [TransfersService],
 })
-export class TransfersModule { }
+export class TransfersModule {}

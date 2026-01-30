@@ -9,51 +9,51 @@ import { BaseEntity } from '../common/base.entity';
 @Index(['userId'])
 @Index(['recipientCode'], { unique: true })
 export class TransferRecipient extends BaseEntity {
-    /**
-     * Owner of this bank account.
-     */
-    @Column('uuid')
-    userId: string;
+  /**
+   * Owner of this bank account.
+   */
+  @Column('uuid')
+  userId: string;
 
-    /**
-     * Paystack recipient code (e.g., RCP_xxxxxx).
-     */
-    @Column({ unique: true })
-    recipientCode: string;
+  /**
+   * Paystack recipient code (e.g., RCP_xxxxxx).
+   */
+  @Column({ unique: true })
+  recipientCode: string;
 
-    /**
-     * Bank code (e.g., "058" for GTBank).
-     */
-    @Column()
-    bankCode: string;
+  /**
+   * Bank code (e.g., "058" for GTBank).
+   */
+  @Column()
+  bankCode: string;
 
-    /**
-     * Bank name (e.g., "Guaranty Trust Bank").
-     */
-    @Column()
-    bankName: string;
+  /**
+   * Bank name (e.g., "Guaranty Trust Bank").
+   */
+  @Column()
+  bankName: string;
 
-    /**
-     * Bank account number.
-     */
-    @Column()
-    accountNumber: string;
+  /**
+   * Bank account number.
+   */
+  @Column()
+  accountNumber: string;
 
-    /**
-     * Account holder name (resolved from Paystack).
-     */
-    @Column()
-    accountName: string;
+  /**
+   * Account holder name (resolved from Paystack).
+   */
+  @Column()
+  accountName: string;
 
-    /**
-     * Whether this is the user's default withdrawal account.
-     */
-    @Column({ default: false })
-    isDefault: boolean;
+  /**
+   * Whether this is the user's default withdrawal account.
+   */
+  @Column({ default: false })
+  isDefault: boolean;
 
-    /**
-     * Whether the account has been verified.
-     */
-    @Column({ default: true })
-    isVerified: boolean;
+  /**
+   * Whether the account has been verified.
+   */
+  @Column({ default: true })
+  isVerified: boolean;
 }

@@ -8,13 +8,13 @@ import { WalletsModule } from '../wallets/wallets.module';
 import { LedgerModule } from '../ledger/ledger.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Transaction, WebhookEvent]),
-        WalletsModule,
-        LedgerModule,
-    ],
-    providers: [PaymentsService],
-    controllers: [PaymentsController],
-    exports: [PaymentsService],
+  imports: [
+    TypeOrmModule.forFeature([Transaction, WebhookEvent]),
+    WalletsModule,
+    LedgerModule,
+  ],
+  providers: [PaymentsService],
+  controllers: [PaymentsController],
+  exports: [PaymentsService],
 })
-export class PaymentsModule { }
+export class PaymentsModule {}

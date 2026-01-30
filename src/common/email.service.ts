@@ -11,7 +11,7 @@ export class EmailService {
 
   async sendPasswordResetEmail(email: string, resetToken: string) {
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-    
+
     try {
       const result = await this.resend.emails.send({
         from: process.env.FROM_EMAIL || 'noreply@gideon-buba.me',

@@ -8,11 +8,9 @@ import { OrgInvite } from '../entities/org-invite.entity';
 import { Wallet } from '../entities/wallet.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Org, OrgMember, OrgInvite, Wallet]),
-    ],
-    controllers: [OrgsController],
-    providers: [OrgsService],
-    exports: [OrgsService],
+  imports: [TypeOrmModule.forFeature([Org, OrgMember, OrgInvite, Wallet])],
+  controllers: [OrgsController],
+  providers: [OrgsService],
+  exports: [OrgsService],
 })
-export class OrgsModule { }
+export class OrgsModule {}
