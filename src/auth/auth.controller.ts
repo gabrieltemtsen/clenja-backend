@@ -6,11 +6,12 @@ import { RegisterDto } from './dto/register.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { ResendVerificationEmailDto } from './dto/resend-verification-email.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
@@ -84,5 +85,32 @@ export class AuthController {
   })
   verifyEmail(@Body() dto: VerifyEmailDto) {
     return this.authService.verifyEmail(dto);
+  }
+
+  @Post('resend-verification-email')
+  @ApiOperation({ summary: 'Resend verification email for existing users' })
+  @ApiBody({
+    description: 'Request new verification code for existing unverified accounts',
+    type: ResendVerificationEmailDto,
+    examples: {
+      example1: {
+        summary: 'Request verification code',
+        description: 'Send a new verification OTP to an existing user email',
+        value: {
+          email: 'existinguser@example.com',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Verification email sent if account exists and is unverified'
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid email format'
+  })
+  resendVerificationEmail(@Body() dto: ResendVerificationEmailDto) {
+    return this.authService.resendVerificationEmail(dto);
   }
 }
