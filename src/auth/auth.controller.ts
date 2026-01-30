@@ -11,7 +11,7 @@ import { ResendVerificationEmailDto } from './dto/resend-verification-email.dto'
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
@@ -90,7 +90,8 @@ export class AuthController {
   @Post('resend-verification-email')
   @ApiOperation({ summary: 'Resend verification email for existing users' })
   @ApiBody({
-    description: 'Request new verification code for existing unverified accounts',
+    description:
+      'Request new verification code for existing unverified accounts',
     type: ResendVerificationEmailDto,
     examples: {
       example1: {
@@ -104,11 +105,11 @@ export class AuthController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Verification email sent if account exists and is unverified'
+    description: 'Verification email sent if account exists and is unverified',
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid email format'
+    description: 'Invalid email format',
   })
   resendVerificationEmail(@Body() dto: ResendVerificationEmailDto) {
     return this.authService.resendVerificationEmail(dto);

@@ -40,4 +40,4 @@ import { AllocationsModule } from './allocations/allocations.module';
     AllocationsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

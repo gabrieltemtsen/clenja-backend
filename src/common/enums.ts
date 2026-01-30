@@ -84,10 +84,10 @@ export enum AllocationStatus {
 }
 
 export enum AllocationRuleType {
-  TXN_LIMIT = 'TXN_LIMIT',             // Max per transaction
-  DAILY_LIMIT = 'DAILY_LIMIT',         // Max per day
-  MONTHLY_LIMIT = 'MONTHLY_LIMIT',     // Max per month
-  TIME_LOCK = 'TIME_LOCK',             // Only spend within time window
+  TXN_LIMIT = 'TXN_LIMIT', // Max per transaction
+  DAILY_LIMIT = 'DAILY_LIMIT', // Max per day
+  MONTHLY_LIMIT = 'MONTHLY_LIMIT', // Max per month
+  TIME_LOCK = 'TIME_LOCK', // Only spend within time window
   WHITELIST_RECIPIENTS = 'WHITELIST_RECIPIENTS', // Only send to specific users
-  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL',       // Needs approval above threshold
+  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL', // Needs approval above threshold
 }

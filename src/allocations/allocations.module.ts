@@ -9,12 +9,12 @@ import { OrgMember } from '../entities/org-member.entity';
 import { LedgerModule } from '../ledger/ledger.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Allocation, AllocationRule, Wallet, OrgMember]),
-        LedgerModule,
-    ],
-    controllers: [AllocationsController],
-    providers: [AllocationsService],
-    exports: [AllocationsService],
+  imports: [
+    TypeOrmModule.forFeature([Allocation, AllocationRule, Wallet, OrgMember]),
+    LedgerModule,
+  ],
+  controllers: [AllocationsController],
+  providers: [AllocationsService],
+  exports: [AllocationsService],
 })
-export class AllocationsModule { }
+export class AllocationsModule {}
